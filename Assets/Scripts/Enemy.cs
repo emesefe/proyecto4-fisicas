@@ -1,13 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private Rigidbody enemyRigidbody;
     [SerializeField] private float speed = 5f;
+    private Rigidbody enemyRigidbody;
+    
     private GameObject player;
 
     private void Awake()
