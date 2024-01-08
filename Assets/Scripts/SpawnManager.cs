@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject powerupPrefab;
 
     private float spawnLimit = 8f;
 
@@ -11,6 +12,10 @@ public class SpawnManager : MonoBehaviour
     {
         Instantiate(enemyPrefab,
             GenerateRandomPosition(), 
+            Quaternion.identity);
+        
+        Instantiate(powerupPrefab,
+            new Vector3(0, 0, 3f), 
             Quaternion.identity);
     }
 
