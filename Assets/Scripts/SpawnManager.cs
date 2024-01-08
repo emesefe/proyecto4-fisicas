@@ -15,7 +15,7 @@ public class SpawnManager : MonoBehaviour
             Quaternion.identity);
         
         Instantiate(powerupPrefab,
-            new Vector3(0, 0, 3f), 
+            new Vector3(0, 0, -3f), 
             Quaternion.identity);
     }
 

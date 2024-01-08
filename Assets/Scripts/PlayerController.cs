@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,7 +10,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject focalPointGameObject;
 
-    private bool hasPowerup;
+    public bool hasPowerup;
     [SerializeField] private float powerupForce = 10f;
 
     private void Awake()
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Powerup"))
         {
             hasPowerup = true;
+            StartCoroutine(PowerupCountdown());
+            Destroy(other.gameObject);
         }
     }
 
@@ -60,5 +63,13 @@ public class PlayerController : MonoBehaviour
             enemyRigidbody.AddForce(direction * powerupForce,
                 ForceMode.Impulse);
         }
+    }
+
+    private IEnumerator PowerupCountdown()
+    {
+        // Espera 6 segundos
+        yield return new WaitForSeconds(6);
+
+        hasPowerup = false;
     }
 }

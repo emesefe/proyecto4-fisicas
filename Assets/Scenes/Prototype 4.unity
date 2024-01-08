@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 8090842098342711124, guid: 42ea783627e8f4683b55212ce16bbaec, type: 3}
+  powerupPrefab: {fileID: 822263947505989249, guid: 30cd7a5da6a284562a384b1aef410fb3, type: 3}
 --- !u!1 &776516466
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,6 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   focalPointGameObject: {fileID: 1665893334}
+  powerupForce: 20
 --- !u!4 &924206979 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7382815964509602841, guid: 3fd5555088952419ebf0eb82e9096fa5, type: 3}
