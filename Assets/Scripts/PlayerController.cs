@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,6 +8,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRigidbody;
     [SerializeField] private float speed = 30f;
     private float forwardInput;
+
+    [SerializeField] private GameObject focalPointGameObject;
 
     private void Awake()
     {
@@ -19,15 +20,19 @@ public class PlayerController : MonoBehaviour
     {
         forwardInput = Input.GetAxis("Vertical");
         
-        // forwardInput > -0.01f && forwardInput < 0.01f
-        if (Mathf.Abs(forwardInput) < 0.01f)
-        {
-            playerRigidbody.velocity = Vector3.zero;
-        }
-        else
-        {
-            playerRigidbody.AddForce(Vector3.forward * 
-                                     speed * forwardInput);
-        }
+        playerRigidbody.AddForce(focalPointGameObject.transform.forward * 
+                                 speed * forwardInput);
+        
+        // SI QUEREMOS QUE EL PLAYER FRENE CUANDO NO PULSAMOS VERTICAL INPUT
+        // // forwardInput > -0.01f && forwardInput < 0.01f
+        // if (Mathf.Abs(forwardInput) < 0.01f)
+        // {
+        //     playerRigidbody.velocity = Vector3.zero;
+        // }
+        // else
+        // {
+        //     playerRigidbody.AddForce(focalPointGameObject.transform.forward * 
+        //                              speed * forwardInput);
+        // }
     }
 }
