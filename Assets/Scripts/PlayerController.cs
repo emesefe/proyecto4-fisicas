@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,9 +9,13 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject focalPointGameObject;
 
+    private bool hasPowerup;
+    [SerializeField] private float powerupForce = 10f;
+
     private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody>();
+        hasPowerup = false;
     }
 
     private void Update()
@@ -31,5 +36,29 @@ public class PlayerController : MonoBehaviour
         //     playerRigidbody.AddForce(focalPointGameObject.transform.forward * 
         //                              speed * forwardInput);
         // }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Powerup"))
+        {
+            hasPowerup = true;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy") && hasPowerup)
+        {
+            // El enemigo sufre un empujón alejándolo del player
+            Rigidbody enemyRigidbody = other.gameObject.
+                GetComponent<Rigidbody>();
+            
+            Vector3 direction = (other.transform.position -
+                                 transform.position).normalized;
+            
+            enemyRigidbody.AddForce(direction * powerupForce,
+                ForceMode.Impulse);
+        }
     }
 }
