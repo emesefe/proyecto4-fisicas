@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641228, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -283,10 +283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c692c84b2b791415eae11cb27a4f0127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
   focalPointGameObject: {fileID: 1546794245}
   hasPowerup: 0
-  powerupForce: 10
   powerupIndicators:
   - {fileID: 217853876}
   - {fileID: 547168773}
@@ -823,7 +821,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 808ff793087184c7f860d014baf79f6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 10
 --- !u!1 &1755662487 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3952281789563796899, guid: c9b1627ac900c4e2eba9f6c27a288042, type: 3}
@@ -896,7 +893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5457740228026402309, guid: 55f309c30b8bb45d789528c21f9c2dcc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5771811696489560931, guid: 55f309c30b8bb45d789528c21f9c2dcc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -957,7 +954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 363526239711234424, guid: d085187fd50a34b09b1e08288f6913e8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8656391589074812818, guid: d085187fd50a34b09b1e08288f6913e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1018,7 +1015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3952281789563796899, guid: c9b1627ac900c4e2eba9f6c27a288042, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9162165390668457980, guid: c9b1627ac900c4e2eba9f6c27a288042, type: 3}
       propertyPath: m_LocalPosition.x

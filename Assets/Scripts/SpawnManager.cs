@@ -13,16 +13,15 @@ public class SpawnManager : MonoBehaviour
 
     private PlayerController playerController;
 
+    private bool powerupInScene;
+    
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
 
+        powerupInScene = false;
         enemiesPerWave = 1;
         SpawnEnemyWave(enemiesPerWave);
-        
-        Instantiate(powerupPrefab,
-            GenerateRandomPosition(), 
-            Quaternion.identity);
     }
 
     private void Update()
@@ -46,6 +45,20 @@ public class SpawnManager : MonoBehaviour
             Instantiate(enemyPrefab, GenerateRandomPosition(), Quaternion.identity);
             enemiesInScene++;
         }
+
+        if (!powerupInScene && enemiesToSpawn > 1)
+        {
+            Instantiate(powerupPrefab,
+                GenerateRandomPosition(), 
+                Quaternion.identity);
+
+            powerupInScene = true;
+        }
+    }
+
+    public void PowerupFinished()
+    {
+        powerupInScene = false;
     }
 
     public void EnemyDestroyed()

@@ -5,13 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRigidbody;
-    [SerializeField] private float speed = 30f;
+    private float speed = 10f;
     private float forwardInput;
 
+    private SpawnManager spawn;
     [SerializeField] private GameObject focalPointGameObject;
 
     public bool hasPowerup;
-    [SerializeField] private float powerupForce = 10f;
+    private float powerupForce = 30f;
 
     [SerializeField] private GameObject[] powerupIndicators;
 
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        spawn = FindObjectOfType<SpawnManager>();
         HideAllPowerupIndicators();
     }
 
@@ -118,6 +120,7 @@ public class PlayerController : MonoBehaviour
         }
     
         hasPowerup = false;
+        spawn.PowerupFinished();
     }
 
     private IEnumerator InvulnerabilityCountdown()
