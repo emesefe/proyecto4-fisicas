@@ -13,30 +13,53 @@ public class PlayerController : MonoBehaviour
     public bool hasPowerup;
     [SerializeField] private float powerupForce = 10f;
 
+    [SerializeField] private GameObject[] powerupIndicators;
+
+    private int lives;
+    private float lowerLimit = -3f;
+    private bool isGameOver;
+    private Vector3 initialPosition;
+
     private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody>();
+        
         hasPowerup = false;
+        initialPosition = Vector3.zero;
+        lives = 3;
+        isGameOver = false;
+    }
+
+    private void Start()
+    {
+        HideAllPowerupIndicators();
     }
 
     private void Update()
     {
-        forwardInput = Input.GetAxis("Vertical");
-        
-        playerRigidbody.AddForce(focalPointGameObject.transform.forward * 
-                                 speed * forwardInput);
-        
-        // SI QUEREMOS QUE EL PLAYER FRENE CUANDO NO PULSAMOS VERTICAL INPUT
-        // // forwardInput > -0.01f && forwardInput < 0.01f
-        // if (Mathf.Abs(forwardInput) < 0.01f)
-        // {
-        //     playerRigidbody.velocity = Vector3.zero;
-        // }
-        // else
-        // {
-        //     playerRigidbody.AddForce(focalPointGameObject.transform.forward * 
-        //                              speed * forwardInput);
-        // }
+        if (isGameOver)
+        {
+            return;
+        }
+
+        Movement();
+
+        if (transform.position.y < lowerLimit)
+        {
+            lives--;
+            if (lives <= 0)
+            {
+                //GAME OVER
+                isGameOver = true;
+            }
+            else
+            {
+                // Puedo seguir jugando
+                transform.position = initialPosition;
+                playerRigidbody.velocity = Vector3.zero;
+                StartCoroutine(InvulnerabilityCountdown());
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,11 +88,56 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Movement()
+    {
+        forwardInput = Input.GetAxis("Vertical");
+        
+        playerRigidbody.AddForce(focalPointGameObject.transform.forward * 
+                                 speed * forwardInput);
+        
+        // SI QUEREMOS QUE EL PLAYER FRENE CUANDO NO PULSAMOS VERTICAL INPUT
+        // // forwardInput > -0.01f && forwardInput < 0.01f
+        // if (Mathf.Abs(forwardInput) < 0.01f)
+        // {
+        //     playerRigidbody.velocity = Vector3.zero;
+        // }
+        // else
+        // {
+        //     playerRigidbody.AddForce(focalPointGameObject.transform.forward * 
+        //                              speed * forwardInput);
+        // }
+    }
+
     private IEnumerator PowerupCountdown()
     {
-        // Espera 6 segundos
-        yield return new WaitForSeconds(6);
-
+        for (int i = 0; i < powerupIndicators.Length; i++)
+        {
+            powerupIndicators[i].SetActive(true);
+            yield return new WaitForSeconds(2);
+            powerupIndicators[i].SetActive(false);
+        }
+    
         hasPowerup = false;
+    }
+
+    private IEnumerator InvulnerabilityCountdown()
+    {
+        playerRigidbody.constraints = RigidbodyConstraints.FreezePosition |
+            RigidbodyConstraints.FreezeRotation;
+        yield return new WaitForSeconds(0.5f);
+        playerRigidbody.constraints = RigidbodyConstraints.None;
+    }
+
+    private void HideAllPowerupIndicators()
+    {
+        foreach (GameObject indicator in powerupIndicators)
+        {
+            indicator.SetActive(false);
+        }
+    }
+
+    public bool GetIsGameOver()
+    {
+        return isGameOver;
     }
 }
