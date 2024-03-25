@@ -10,14 +10,17 @@ public class SpawnManager : MonoBehaviour
 
     private int enemiesInScene;
     private int enemiesPerWave = 1;
+    private int totalEnemiesDefeated;
 
-    private PlayerController playerController;
+    private GameManager gameManager;
+    private UIGame uiGame;
 
     private bool powerupInScene;
     
     private void Start()
     {
-        playerController = FindObjectOfType<PlayerController>();
+        gameManager = FindObjectOfType<GameManager>();
+        uiGame = FindObjectOfType<UIGame>();
 
         powerupInScene = false;
         enemiesPerWave = 1;
@@ -28,14 +31,15 @@ public class SpawnManager : MonoBehaviour
     {
         //enemiesInScene = FindObjectsOfType<Enemy>().Length;
         
-        if (enemiesInScene <= 0)
+        if (enemiesInScene <= 0 && !gameManager.GetIsGameOver())
         {
             enemiesPerWave++;
-            if (!playerController.GetIsGameOver())
+            if (!gameManager.GetIsGameOver())
             {
                 SpawnEnemyWave(enemiesPerWave);
             }  
         }
+        
     }
 
     private void SpawnEnemyWave(int enemiesToSpawn)
@@ -45,6 +49,9 @@ public class SpawnManager : MonoBehaviour
             Instantiate(enemyPrefab, GenerateRandomPosition(), Quaternion.identity);
             enemiesInScene++;
         }
+        
+        uiGame.UpdateEnemiesInSceneText(enemiesInScene, enemiesPerWave);
+        uiGame.UpdateCurrentWaveText(enemiesPerWave);
 
         if (!powerupInScene && enemiesToSpawn > 1)
         {
@@ -64,6 +71,9 @@ public class SpawnManager : MonoBehaviour
     public void EnemyDestroyed()
     {
         enemiesInScene--;
+        totalEnemiesDefeated++;
+        
+        uiGame.UpdateEnemiesInSceneText(enemiesInScene, enemiesPerWave);
     }
 
     private Vector3 GenerateRandomPosition()
@@ -72,5 +82,20 @@ public class SpawnManager : MonoBehaviour
         float z = Random.Range(-spawnLimit, spawnLimit);
 
         return new Vector3(x, 0, z);
+    }
+
+    public int GetWave()
+    {
+        return enemiesPerWave;
+    }
+    
+    public int GetTotalEnemiesDefeated()
+    {
+        return totalEnemiesDefeated;
+    }
+    
+    public int GetEnemiesInScene()
+    {
+        return enemiesInScene;
     }
 }

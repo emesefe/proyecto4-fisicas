@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Timers;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -18,8 +19,12 @@ public class PlayerController : MonoBehaviour
 
     private int lives;
     private float lowerLimit = -3f;
-    private bool isGameOver;
+    
     private Vector3 initialPosition;
+
+    private int totalPowerups;
+
+    private GameManager gameManager;
 
     private void Awake()
     {
@@ -28,31 +33,25 @@ public class PlayerController : MonoBehaviour
         hasPowerup = false;
         initialPosition = Vector3.zero;
         lives = 3;
-        isGameOver = false;
     }
 
     private void Start()
     {
         spawn = FindObjectOfType<SpawnManager>();
+        gameManager = FindObjectOfType<GameManager>();
+        
         HideAllPowerupIndicators();
     }
 
     private void Update()
     {
-        if (isGameOver)
-        {
-            return;
-        }
-
-        Movement();
-
         if (transform.position.y < lowerLimit)
         {
             lives--;
             if (lives <= 0)
             {
                 //GAME OVER
-                isGameOver = true;
+                gameManager.GameOver();
             }
             else
             {
@@ -64,6 +63,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (gameManager.GetIsGameOver())
+        {
+            return;
+        }
+        
+        Movement();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Powerup"))
@@ -71,6 +80,7 @@ public class PlayerController : MonoBehaviour
             hasPowerup = true;
             StartCoroutine(PowerupCountdown());
             Destroy(other.gameObject);
+            totalPowerups++;
         }
     }
 
@@ -139,8 +149,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public bool GetIsGameOver()
+    public int GetTotalPowerups()
     {
-        return isGameOver;
+        return totalPowerups;
     }
+
+    
 }

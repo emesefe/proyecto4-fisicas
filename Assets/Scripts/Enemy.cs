@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -10,7 +11,7 @@ public class Enemy : MonoBehaviour
     private float lowerLimit = -3f;
 
     private SpawnManager spawnManager;
-    private PlayerController playerController;
+    private GameManager gameManager;
 
     private void Awake()
     {
@@ -20,21 +21,24 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         player = GameObject.Find("Player");
-        playerController = player.GetComponent<PlayerController>();
+        gameManager = FindObjectOfType<GameManager>();
         spawnManager = FindObjectOfType<SpawnManager>();
     }
 
     private void Update()
     {
-        if (!playerController.GetIsGameOver())
-        {
-            GoToPlayer();
-        }
-
         if (transform.position.y < lowerLimit)
         {
             spawnManager.EnemyDestroyed();
             Destroy(gameObject);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!gameManager.GetIsGameOver())
+        {
+            GoToPlayer();
         }
     }
 
