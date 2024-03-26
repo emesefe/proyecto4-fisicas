@@ -25,6 +25,8 @@ public class UIGame : MonoBehaviour
     
     [SerializeField] private TextMeshProUGUI currentWaveText;
     [SerializeField] private TextMeshProUGUI enemiesInSceneText;
+
+    [SerializeField] private GameObject[] lives;
     
     private GameManager gameManager;
     
@@ -100,5 +102,11 @@ public class UIGame : MonoBehaviour
         currentWaveText.text = $"Wave: {currentWave}";
     }
 
-
+    public void ShowLives(int livesToShow)
+    {
+        for (int i = 0; i < lives.Length; i++)
+        {
+            lives[i].SetActive(i < livesToShow);
+        }
+    }
 }

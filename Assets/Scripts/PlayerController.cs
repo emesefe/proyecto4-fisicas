@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject[] powerupIndicators;
 
     private int lives;
+    private int maxLives = 3;
     private float lowerLimit = -3f;
     
     private Vector3 initialPosition;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private int totalPowerups;
 
     private GameManager gameManager;
+    private UIGame uiGame;
 
     private void Awake()
     {
@@ -32,14 +34,16 @@ public class PlayerController : MonoBehaviour
         
         hasPowerup = false;
         initialPosition = Vector3.zero;
-        lives = 3;
+        
     }
 
     private void Start()
     {
         spawn = FindObjectOfType<SpawnManager>();
         gameManager = FindObjectOfType<GameManager>();
+        uiGame = FindObjectOfType<UIGame>();
         
+        lives = maxLives;
         HideAllPowerupIndicators();
     }
 
@@ -47,19 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         if (transform.position.y < lowerLimit)
         {
-            lives--;
-            if (lives <= 0)
-            {
-                //GAME OVER
-                gameManager.GameOver();
-            }
-            else
-            {
-                // Puedo seguir jugando
-                transform.position = initialPosition;
-                playerRigidbody.velocity = Vector3.zero;
-                StartCoroutine(InvulnerabilityCountdown());
-            }
+            LoseLife();
         }
     }
 
@@ -154,5 +146,30 @@ public class PlayerController : MonoBehaviour
         return totalPowerups;
     }
 
-    
+    private void LoseLife()
+    {
+        lives--;
+        lives = Math.Clamp(lives, 0, maxLives);
+        uiGame.ShowLives(lives);
+
+        if (lives == 0)
+        {
+            //GAME OVER
+            gameManager.GameOver();
+        }
+        else
+        {
+            // Puedo seguir jugando
+            transform.position = initialPosition;
+            playerRigidbody.velocity = Vector3.zero;
+            StartCoroutine(InvulnerabilityCountdown());
+        }
+    }
+
+    public void WinLife()
+    {
+        lives++;
+        lives = Math.Clamp(lives, 0, maxLives);
+        uiGame.ShowLives(lives);
+    }
 }

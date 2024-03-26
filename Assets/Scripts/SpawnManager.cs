@@ -11,9 +11,11 @@ public class SpawnManager : MonoBehaviour
     private int enemiesInScene;
     private int enemiesPerWave = 1;
     private int totalEnemiesDefeated;
+    [SerializeField] private int totalEnemiesToDefeatToWinLife = 10;
 
     private GameManager gameManager;
     private UIGame uiGame;
+    private PlayerController playerController;
 
     private bool powerupInScene;
     
@@ -21,6 +23,7 @@ public class SpawnManager : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         uiGame = FindObjectOfType<UIGame>();
+        playerController = FindObjectOfType<PlayerController>();
 
         powerupInScene = false;
         enemiesPerWave = 1;
@@ -72,6 +75,11 @@ public class SpawnManager : MonoBehaviour
     {
         enemiesInScene--;
         totalEnemiesDefeated++;
+
+        if (totalEnemiesDefeated % totalEnemiesToDefeatToWinLife == 0)
+        {
+            playerController.WinLife();
+        }
         
         uiGame.UpdateEnemiesInSceneText(enemiesInScene, enemiesPerWave);
     }
